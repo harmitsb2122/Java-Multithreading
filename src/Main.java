@@ -1,5 +1,6 @@
-class MyTask
+class MyTask extends Thread
 {
+    @Override
     public void run()
     {
         for (int i = 1; i <= 10; i++) {
@@ -16,10 +17,9 @@ public class Main {
         // Job 1
         System.out.println("== Application started ==");
 
-        // Job 2 --> If job2 is a heavy/time consuming task then it may cause app to appear
-        // as it has hung
-        MyTask myTask = new MyTask();
-        myTask.run();
+        // Job 2 --> Now Job 2 is executed parallely with Job 3
+        MyTask myTask = new MyTask(); // child thread / worker thread
+        myTask.start();
 
         // Job 3
         for (int i = 1; i <= 10; i++) {
