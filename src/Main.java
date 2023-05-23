@@ -24,8 +24,10 @@ public class Main {
         System.out.println("== Application started ==");
 
         // Job 2 --> Now Job 2 is executed parallely with Job 3
-        Runnable r = new MyTask();
-        Thread t = new Thread(r);
+        Thread t = new Thread(new MyTask());
+
+        // Job2 will be executed parallely with main
+        t.setDaemon(true);
         t.start();
 
         // Job 3
