@@ -1,17 +1,38 @@
-class ParentTask{
-    void print()
+class Printer{
+    void print(int numOfCopies ,String name)
     {
-        System.out.println("Hi there!");
+        for (int i = 1; i <= numOfCopies; i++) {
+            System.out.println("Printing "+i+"th copy of "+name);
+        }
     }
 }
-class MyTask extends ParentTask implements Runnable
+class MyThread1 implements Runnable
 {
+    Printer printer;
+
+    MyThread1(Printer printer)
+    {
+        this.printer = printer;
+    }
     @Override
     public void run()
     {
-        for (int i = 1; i <= 10; i++) {
-            System.out.println("Printer 2 executed task "+i);
-        }
+        printer.print(10,"X");
+    }
+}
+
+class MyThread2 implements Runnable
+{
+    Printer printer;
+
+    MyThread2(Printer printer)
+    {
+        this.printer = printer;
+    }
+    @Override
+    public void run()
+    {
+        printer.print(10,"Y");
     }
 }
 
@@ -23,17 +44,14 @@ public class Main {
         // Job 1
         System.out.println("== Application started ==");
 
-        // Job 2 --> Now Job 2 is executed parallely with Job 3
-        Thread t = new Thread(new MyTask());
+        // Lets have a common printer for now
+        Printer printer = new Printer();
 
-        // Job2 will be executed parallely with main
-        t.setDaemon(true);
-        t.start();
-
-        // Job 3
-        for (int i = 1; i <= 10; i++) {
-            System.out.println("Printer 1 executed task "+i);
-        }
+        // Threads executing async
+        Thread t1 = new Thread(new MyThread1(printer));
+        Thread t2 = new Thread(new MyThread2(printer));
+        t1.start();
+        t2.start();
 
         // Job 4
         System.out.println("== Application terminated ==");
