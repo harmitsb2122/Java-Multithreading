@@ -17,7 +17,10 @@ class MyThread1 implements Runnable
     @Override
     public void run()
     {
-        printer.print(10,"X");
+        synchronized (printer)
+        {
+            printer.print(10,"X");
+        }
     }
 }
 
@@ -32,7 +35,10 @@ class MyThread2 implements Runnable
     @Override
     public void run()
     {
-        printer.print(10,"Y");
+        synchronized (printer)
+        {
+            printer.print(10,"Y");
+        }
     }
 }
 
@@ -51,11 +57,6 @@ public class Main {
         Thread t1 = new Thread(new MyThread1(printer));
         Thread t2 = new Thread(new MyThread2(printer));
         t1.start();
-        try {
-            t1.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         t2.start();
 
         // Job 4
